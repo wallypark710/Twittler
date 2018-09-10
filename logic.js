@@ -1,15 +1,17 @@
-var calculateTime = function(startTime, currentTime){
+var calculateTime = function(setTime, currentTime){
 
-  var passHours = currentTime.getHours() - startTime.getHours();
-  var passMin = currentTime.getMinutes() - startTime.getMinutes();
-  var passSec = currentTime.getSeconds() - startTime.getSeconds();
+  var currentMSec = currentTime.getMinutes()*60 + currentTime.getSeconds();
+  var createMSec = setTime.getMinutes()*60 + setTime.getSeconds();
 
-  if( passHours !== 0 ){
-    return passHours.toString() + " hours ago"; 
-  } else if( passMin !== 0 ){
-    return passMin.toString() + " minutes ago";
+  var currentHMin = currentTime.getHours()*60 + currentTime.getMinutes();
+  var createHMin = setTime.getHours()*60 + setTime.getMinutes();
+  
+  if( currentHMin - createHMin >= 60 ){
+    return parseInt((currentHMin - createHMin)/60, 10).toString() + " hours ago"; 
+  } else if( currentMSec - createMSec >= 60 ){
+    return parseInt((currentMSec - createMSec)/60, 10).toString() + " minutes ago";
   } else{
-    return passSec.toString() + " seconds ago";
+    return (currentMSec - createMSec).toString() + " seconds ago";
   }
 }
 
@@ -63,7 +65,6 @@ var timeLoop = function(){
 $(document).ready(function(){
  
   var $body = $('#main');
-  $body.html('');  //?????
   var index = streams.home.length;
   var history = index;
   var end = 0;
